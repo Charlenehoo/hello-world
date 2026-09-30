@@ -14,7 +14,8 @@
             "binaryDir": "${sourceDir}/build/${presetName}",
             "cacheVariables": {
                 "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-                "VCPKG_TARGET_TRIPLET": "x64-windows",
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static-md",
+                "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL",
                 "VCPKG_MANIFEST_MODE": "ON",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
             }
@@ -23,7 +24,6 @@
             "name": "compiler-msvc",
             "hidden": true,
             "cacheVariables": {
-                "CMAKE_C_COMPILER": "cl",
                 "CMAKE_CXX_COMPILER": "cl"
             }
         },
@@ -31,7 +31,6 @@
             "name": "compiler-clang",
             "hidden": true,
             "cacheVariables": {
-                "CMAKE_C_COMPILER": "clang-cl",
                 "CMAKE_CXX_COMPILER": "clang-cl",
                 "CMAKE_CXX_COMPILER_FRONTEND_VARIANT": "MSVC"
             }
