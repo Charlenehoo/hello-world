@@ -31,8 +31,9 @@
             "name": "compiler-clang",
             "hidden": true,
             "cacheVariables": {
-                "CMAKE_C_COMPILER": "clang",
-                "CMAKE_CXX_COMPILER": "clang++"
+                "CMAKE_C_COMPILER": "clang-cl",
+                "CMAKE_CXX_COMPILER": "clang-cl",
+                "CMAKE_CXX_COMPILER_FRONTEND_VARIANT": "MSVC"
             }
         },
         {
