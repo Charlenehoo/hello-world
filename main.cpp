@@ -1,9 +1,6 @@
-#include <fmt/core.h>
+#include "pch.h" // IWYU pragma: keep
 
 int main() {
-  int x = 5;    // modernize/readability 可能提示
-  if (x == 5) { // bugprone 会提示可以用 true
-  }
   fmt::print("Hello, {}!\n", "World");
   return 0;
 }
