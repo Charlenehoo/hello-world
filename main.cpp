@@ -8,7 +8,7 @@ SKSEPlugin_Load(const SKSE::LoadInterface *a_skse) -> bool {
 extern "C" [[maybe_unused]]
 __declspec(dllexport) constinit SKSE::PluginVersionData SKSEPlugin_Version =
     []() {
-      SKSE::PluginVersionData v;
+      SKSE::PluginVersionData data;
       // v.PluginVersion();
       // v.PluginName();
       // v.AuthorName();
@@ -16,5 +16,5 @@ __declspec(dllexport) constinit SKSE::PluginVersionData SKSEPlugin_Version =
       // v.UsesUpdatedStructs();
       // v.CompatibleVersions({SKSE::RUNTIME_SSE_LATEST});
       // v.MinimumRequiredXSEVersion(REL::Version{2, 3, 0});
-      return v;
+      return data;
     }();
