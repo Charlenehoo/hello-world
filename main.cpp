@@ -6,7 +6,7 @@ SKSEPlugin_Load(const SKSE::LoadInterface *a_skse) -> bool {
                          .log = true,
                      });
   const auto *messaging = SKSE::GetMessagingInterface();
-  if (!messaging) {
+  if (messaging == nullptr) {
     return false;
   }
 
@@ -36,7 +36,7 @@ SKSEPlugin_Load(const SKSE::LoadInterface *a_skse) -> bool {
 
 extern "C" [[maybe_unused]]
 __declspec(dllexport) constinit auto SKSEPlugin_Version =
-    []() -> SKSE::PluginVersionData {
+    []() noexcept -> SKSE::PluginVersionData {
   SKSE::PluginVersionData data;
   data.PluginVersion(REL::Version{2, 3, 0});
   data.PluginName("Hello");

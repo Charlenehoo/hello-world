@@ -3,6 +3,7 @@ Checks: >
   bugprone-*,
   clang-analyzer-*,
   cppcoreguidelines-*,
+  -cppcoreguidelines-pro-type-vararg,
   modernize-*,
   performance-*,
   portability-*,
