@@ -9,7 +9,8 @@
         ".clang-tidy": "yaml",
         ".clangd": "yaml",
         "CMakeLists.txt": "cmake",
-        "*.cmake": "cmake"
+        "*.cmake": "cmake",
+        "*.h.in": "plaintext"
     },
     "clangd.path": "C:/Users/CharleneHoo/Scoop/apps/llvm/current/bin/clangd.exe",
     "clangd.arguments": [
