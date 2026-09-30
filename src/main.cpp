@@ -41,9 +41,9 @@ extern "C" [[maybe_unused]]
 __declspec(dllexport) constinit auto SKSEPlugin_Version =
     []() noexcept -> SKSE::PluginVersionData {
   SKSE::PluginVersionData data;
-  data.PluginVersion(REL::Version{2, 3, 0});
-  data.PluginName("Hello");
-  data.AuthorName("Charlene Hoo");
+  data.PluginVersion(Plugin::VERSION);
+  data.PluginName(Plugin::NAME);
+  data.AuthorName(Plugin::AUTHOR);
   data.UsesAddressLibrary();
   data.UsesUpdatedStructs();
   data.CompatibleVersions({SKSE::RUNTIME_SSE_LATEST});

@@ -2,7 +2,9 @@
 
 #pragma once
 
+#include <REL/Relocation.h>
 #include <string_view>
+
 
 namespace Plugin {
 using namespace std::literals;
