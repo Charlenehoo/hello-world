@@ -1,0 +1,15 @@
+{
+    "clangd.path": "C:/Users/CharleneHoo/Scoop/apps/llvm/current/bin/clangd.exe",
+    "clangd.arguments": [
+        "--compile-commands-dir=${workspaceFolder}/build/clang-debug",
+        "--background-index",
+        "--clang-tidy",
+        "--completion-style=detailed",
+        "--header-insertion=iwyu",
+        "--pch-storage=memory",
+        "-j=8",
+        "--log=info"
+    ],
+    "clangd.onConfigChanged": "restart",
+    "C_Cpp.intelliSenseEngine": "disabled"
+}
