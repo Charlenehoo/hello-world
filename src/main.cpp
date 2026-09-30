@@ -20,8 +20,10 @@ auto OnMessage(SKSE::MessagingInterface::Message *a_msg) -> void {
 }
 } // namespace
 
+// NOLINTBEGIN(readability-identifier-naming)
 extern "C" [[maybe_unused]] __declspec(dllexport) auto
 SKSEPlugin_Load(const SKSE::LoadInterface *a_skse) -> bool {
+  // NOLINTEND(readability-identifier-naming)
   SKSE::Init(a_skse, SKSE::InitInfo{
                          .log = true,
                      });
@@ -37,9 +39,11 @@ SKSEPlugin_Load(const SKSE::LoadInterface *a_skse) -> bool {
   return true;
 }
 
+// NOLINTBEGIN(readability-identifier-naming)
 extern "C" [[maybe_unused]]
 __declspec(dllexport) constinit auto SKSEPlugin_Version =
     []() noexcept -> SKSE::PluginVersionData {
+  // NOLINTEND(readability-identifier-naming)
   SKSE::PluginVersionData data;
   data.PluginVersion(Plugin::kVersion);
   data.PluginName(Plugin::kName);
