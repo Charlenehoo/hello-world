@@ -1,6 +1,6 @@
 #include "pch.h" // IWYU pragma: keep
 
-auto main() -> int {
-  fmt::print("Hello, {}!\n", "World");
-  return 0;
+extern "C" [[maybe_unused]] __declspec(dllexport) auto
+SKSEPlugin_Load(const SKSE::LoadInterface *skse) -> bool {
+  return true;
 }
