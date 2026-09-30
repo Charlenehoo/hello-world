@@ -1,6 +1,6 @@
 #include "pch.h" // IWYU pragma: keep
 
-int main() {
+auto main() -> int {
   fmt::print("Hello, {}!\n", "World");
   return 0;
 }
