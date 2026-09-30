@@ -1,7 +1,16 @@
 cmake_minimum_required(VERSION 3.16)
-project(hello LANGUAGES CXX)
+project(Hello VERSION 0.1.0 LANGUAGES CXX)
+set(PLUGIN_AUTHOR "Charlene Hoo")
 
-add_library("${PROJECT_NAME}" SHARED main.cpp)
+set(VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/src/Plugin.h")
+configure_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Plugin.h.in"
+    "${VERSION_HEADER}"
+    @ONLY
+)
+source_group("src" FILES "${VERSION_HEADER}")
+
+add_library("${PROJECT_NAME}" SHARED src/main.cpp)
 target_compile_features("${PROJECT_NAME}" PRIVATE cxx_std_17)
 if(MSVC)
     target_compile_options("${PROJECT_NAME}" PRIVATE /utf-8)
@@ -16,4 +25,4 @@ target_link_libraries(
     CommonLibSSE::CommonLibSSE
 )
 
-target_precompile_headers("${PROJECT_NAME}" PRIVATE pch.h)
+target_precompile_headers("${PROJECT_NAME}" PRIVATE src/pch.h)

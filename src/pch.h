@@ -6,3 +6,4 @@
 #include <SKSE/SKSE.h>
 #include <spdlog/spdlog.h>
 // IWYU pragma: end_exports
+#include "Plugin.h"
