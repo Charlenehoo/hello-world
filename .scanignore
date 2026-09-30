@@ -1,0 +1,5 @@
+tools/
+.scanignore
+scan.md
+
+.gitignore
