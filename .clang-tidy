@@ -7,9 +7,6 @@ Checks: >
   performance-*,
   portability-*,
   readability-*,
-  -modernize-use-trailing-return-type,
-  -readability-identifier-length,
-  -cppcoreguidelines-avoid-magic-numbers
-WarningsAsErrors: ''
-HeaderFilterRegex: '.*'
+WarningsAsErrors: ""
+HeaderFilterRegex: ".*"
 FormatStyle: file
