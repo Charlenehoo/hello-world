@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 project(Hello VERSION 0.1.0 LANGUAGES CXX)
-set(PLUGIN_AUTHOR "Charlene Hoo")
+set(PROJECT_AUTHOR "Charlene Hoo")
 
 set(VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/src/Plugin.h")
 configure_file(
@@ -15,6 +15,12 @@ target_compile_features("${PROJECT_NAME}" PRIVATE cxx_std_17)
 if(MSVC)
     target_compile_options("${PROJECT_NAME}" PRIVATE /utf-8)
 endif()
+
+target_include_directories(
+    "${PROJECT_NAME}"
+    PRIVATE
+    "${CMAKE_CURRENT_BINARY_DIR}/src"
+)
 
 set(SKYRIM_SUPPORT_AE ON)
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/extern/CommonLibSSE" CommonLibSSE EXCLUDE_FROM_ALL SYSTEM)
