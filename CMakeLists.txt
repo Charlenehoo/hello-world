@@ -7,6 +7,7 @@ if(MSVC)
     target_compile_options("${PROJECT_NAME}" PRIVATE /utf-8)
 endif()
 
+set(SKYRIM_SUPPORT_AE ON)
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/extern/CommonLibSSE" CommonLibSSE EXCLUDE_FROM_ALL SYSTEM)
 find_package(commonlib-shared REQUIRED CONFIG)
 target_link_libraries(
