@@ -1,5 +1,6 @@
 {
-    "version": 6,
+    "$schema": "https://json.schemastore.org/cmake-presets.json",
+    "version": 10,
     "cmakeMinimumRequired": {
         "major": 3,
         "minor": 20,
@@ -14,7 +15,8 @@
             "cacheVariables": {
                 "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
                 "VCPKG_TARGET_TRIPLET": "x64-windows",
-                "VCPKG_MANIFEST_MODE": "ON"
+                "VCPKG_MANIFEST_MODE": "ON",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
             }
         },
         {
