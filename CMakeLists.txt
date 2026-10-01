@@ -45,3 +45,30 @@ target_link_libraries(
 )
 
 target_precompile_headers("${PROJECT_NAME}" PRIVATE src/pch.h)
+
+if(DEFINED ENV{MO2})
+    set(MO2_PLUGIN_DIR "$ENV{MO2}/mods/${PROJECT_NAME}/SKSE/Plugins")
+
+    add_custom_command(
+        TARGET "${PROJECT_NAME}" POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E make_directory "${MO2_PLUGIN_DIR}"
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "$<TARGET_FILE:${PROJECT_NAME}>"
+        "${MO2_PLUGIN_DIR}/$<TARGET_FILE_NAME:${PROJECT_NAME}>"
+        COMMENT "Copying $<TARGET_FILE_NAME:${PROJECT_NAME}> to MO2: ${MO2_PLUGIN_DIR}"
+    )
+
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+        add_custom_command(
+            TARGET "${PROJECT_NAME}" POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "$<TARGET_PDB_FILE:${PROJECT_NAME}>"
+            "${MO2_PLUGIN_DIR}/$<TARGET_PDB_FILE_NAME:${PROJECT_NAME}>"
+            COMMENT "Copying $<TARGET_PDB_FILE_NAME:${PROJECT_NAME}> to MO2: ${MO2_PLUGIN_DIR}"
+        )
+    endif()
+
+    message(STATUS "MO2 detected. Output will be copied to: ${MO2_PLUGIN_DIR}")
+else()
+    message(STATUS "MO2 environment variable not found. Skipping auto-copy.")
+endif()
