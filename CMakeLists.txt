@@ -12,7 +12,10 @@ configure_file(
     @ONLY
 )
 
-add_library("${PROJECT_NAME}" SHARED src/main.cpp)
+add_library(
+    "${PROJECT_NAME}" SHARED
+    src/main.cpp
+)
 target_compile_features("${PROJECT_NAME}" PRIVATE cxx_std_23)
 if(MSVC)
     target_compile_options("${PROJECT_NAME}" PRIVATE
@@ -23,8 +26,7 @@ if(MSVC)
 endif()
 
 target_include_directories(
-    "${PROJECT_NAME}"
-    PRIVATE
+    "${PROJECT_NAME}" PRIVATE
     "${CMAKE_CURRENT_BINARY_DIR}/src"
 )
 
@@ -38,8 +40,7 @@ if(TARGET CommonLibSSE)
     )
 endif()
 target_link_libraries(
-    "${PROJECT_NAME}"
-    PRIVATE
+    "${PROJECT_NAME}" PRIVATE
     CommonLibSSE::CommonLibSSE
 )
 

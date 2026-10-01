@@ -12,7 +12,6 @@
         "*.cmake": "cmake",
         "*.h.in": "plaintext"
     },
-    "clangd.path": "${env:SCOOP}/shims/clangd.exe",
     "clangd.arguments": [
         "--compile-commands-dir=${workspaceFolder}/build/clang-debug",
         "--background-index",
@@ -24,5 +23,5 @@
         "--log=info"
     ],
     "clangd.onConfigChanged": "restart",
-    "C_Cpp.intelliSenseEngine": "disabled",
+    "C_Cpp.intelliSenseEngine": "disabled"
 }
