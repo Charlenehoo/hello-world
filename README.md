@@ -1,242 +1,90 @@
 # Hello
 
-A minimal SKSE plugin template for Skyrim Special Edition, built with CMake,
-vcpkg, and CommonLibSSE.
+基于 CMake、vcpkg 和 CommonLibSSE 的极简 SKSE 插件模板。
 
-## Features
+## ✨ 特性
 
-- CMake + Ninja presets for MSVC and clang-cl, Debug and Release
-- vcpkg manifest mode with `commonlib-shared` overlay
-- `clangd` / `clang-tidy` / `clang-format` configured out of the box
-- Static-linked runtime (`x64-windows-static-md`) — output is a single DLL
-- Plugin metadata (name, author, version) generated from CMake
+- **构建**：CMake Presets + Ninja，支持 MSVC (`msvc-*`) 与 Clang (`clang-*`)。
+- **依赖**：vcpkg manifest 模式，静态链接（`x64-windows-static-md`），开箱即用。
+- **代码质量**：内置 `clangd`、`clang-tidy`、`clang-format` 配置。
+- **MO2 集成**：检测到 `$env:MO2` 环境变量时，编译后自动复制 DLL/PDB 到模组目录。
 
-## Prerequisites
+## 🛠️ 环境要求
 
-| Tool          | Version       | Notes                                         |
-| ------------- | ------------- | --------------------------------------------- |
-| Visual Studio | 2022 or newer | "Desktop development with C++" workload       |
-| CMake         | 3.20+         | 4.x recommended                               |
-| Ninja         | any           | bundled with VS or install separately         |
-| vcpkg         | latest        | must set `VCPKG_ROOT`                         |
-| LLVM          | 18+           | optional, only for clang-cl preset and clangd |
-| Git           | any           | for submodules                                |
+| 工具          | 要求                                        |
+| ------------- | ------------------------------------------- |
+| Visual Studio | 2022+（含 C++ 桌面开发工作负载）            |
+| CMake         | 3.20+                                       |
+| vcpkg         | 最新版，需设置 `VCPKG_ROOT` 环境变量        |
+| LLVM          | 18+（可选，供 clangd 和 clang-cl 预设使用） |
 
-### Set `VCPKG_ROOT`
+> ⚠️ 首次使用请确保终端能读到 `$env:VCPKG_ROOT`。
 
-The build system reads `VCPKG_ROOT` from the environment.
+## 🚀 快速开始
 
 ```powershell
-[Environment]::SetEnvironmentVariable(
-    "VCPKG_ROOT",
-    "C:\path\to\vcpkg",
-    "User"
-)
-```
-
-Reopen your terminal after setting it. Verify:
-
-```powershell
-echo $env:VCPKG_ROOT
-```
-
-## Getting Started
-
-### 1. Clone with submodules
-
-```powershell
+# 1. 拉取代码与子模块
 git clone --recurse-submodules <repo-url> hello
 cd hello
-```
 
-If you already cloned without `--recurse-submodules`:
-
-```powershell
-git submodule update --init --recursive
-```
-
-### 2. Configure
-
-```powershell
+# 2. 配置并编译（首次会编译 vcpkg 依赖，耗时较长）
 cmake --preset msvc-debug
-```
-
-First run downloads and builds dependencies via vcpkg. Expect a few minutes.
-
-### 3. Build
-
-```powershell
 cmake --build --preset msvc-debug
 ```
 
-Output: `build/msvc-debug/Hello.dll`
+输出文件位于：`build/msvc-debug/Hello.dll`
 
-### 4. Install
+### 自动部署到 MO2（可选）
 
-Copy the DLL into your Skyrim SE plugins directory:
+设置环境变量 `MO2` 指向 MO2 根目录：
 
 ```powershell
-$plugins = "C:\SteamLibrary\steamapps\common\Skyrim Special Edition\Data\SKSE\Plugins"
-Copy-Item .\build\msvc-debug\Hello.dll $plugins
+[Environment]::SetEnvironmentVariable("MO2", "C:\path\to\ModOrganizer-2.5.2", "User")
 ```
 
-### 5. Run
+重新打开终端后，每次编译成功，DLL 和 PDB 会自动复制到 `mods/Hello/SKSE/Plugins/` 下。
 
-Launch Skyrim SE via `skse64_loader.exe`. Check logs:
+## 💻 编辑器配置 (VS Code)
 
-- `Documents\My Games\Skyrim Special Edition\SKSE\skse64.log` — loader log
-- `Documents\My Games\Skyrim Special Edition\SKSE\Hello.log` — plugin log
+本项目使用 `clangd` 提供代码补全，**无需**微软 C/C++ 扩展。
 
-If the plugin loaded correctly, `skse64.log` shows:
+首次克隆后，必须生成一次 clang 索引（因为 clangd 无法解析 MSVC 的编译参数）：
 
-```
-loading plugin "Hello"
-plugin Hello.dll (00000001 Hello 00010000) loaded correctly
+```powershell
+cmake --preset clang-debug
 ```
 
-## Presets
+之后打开 VS Code，clangd 会自动读取 `build/clang-debug/compile_commands.json` 并开始索引。
 
-| Preset          | Compiler | Build type |
-| --------------- | -------- | ---------- |
-| `msvc-debug`    | MSVC     | Debug      |
-| `msvc-release`  | MSVC     | Release    |
-| `clang-debug`   | clang-cl | Debug      |
-| `clang-release` | clang-cl | Release    |
+> 💡 **提示**：写代码时使用 `clang-debug` 预设保证 clangd 正常运作；实际调试运行用 `msvc-debug` 预设，两者互不干扰。
 
-Switch compilers by switching presets. Each preset has its own build directory
-under `build/`.
-
-## Customization
-
-### Change plugin metadata
-
-Edit `CMakeLists.txt`:
-
-```cmake
-project(Hello VERSION 0.1.0 LANGUAGES CXX)
-set(PROJECT_AUTHOR "Your Name")
-```
-
-These values generate `build/<preset>/src/Plugin.h` and are used by
-`SKSEPlugin_Version` in `src/main.cpp`.
-
-### Add source files
-
-```cmake
-add_library("${PROJECT_NAME}" SHARED
-    src/main.cpp
-    src/foo.cpp
-    src/bar.cpp
-)
-```
-
-### Add dependencies
-
-Edit `vcpkg.json`:
-
-```json
-{
-  "name": "hello",
-  "version": "0.1.0",
-  "dependencies": ["commonlib-shared", "fmt"]
-}
-```
-
-Then re-run configure. CMake links it:
-
-```cmake
-find_package(fmt CONFIG REQUIRED)
-target_link_libraries("${PROJECT_NAME}" PRIVATE fmt::fmt)
-```
-
-## Editor Setup
-
-### VS Code
-
-Requires the [clangd extension](https://marketplace.visualstudio.com/items?itemName=llvm-vs-code-extensions.vscode-clangd).
-
-1. Configure `clang-debug` at least once so `compile_commands.json` exists:
-
-   ```powershell
-   cmake --preset clang-debug
-   ```
-
-2. Open the project folder. `clangd` starts indexing automatically.
-
-3. Adjust `clangd.path` in `.vscode/settings.json` if LLVM isn't on `PATH`:
-
-   ```json
-   "clangd.path": "C:/path/to/llvm/bin/clangd.exe"
-   ```
-
-### Other editors
-
-Any editor that understands `compile_commands.json` works. Point it at
-`build/clang-debug/compile_commands.json`.
-
-## Project Layout
+## 📂 项目结构
 
 ```
 .
-├── .vscode/
-│   └── settings.json          # clangd, format-on-save, file associations
-├── cmake/
-│   └── Plugin.h.in            # metadata template
-├── extern/
-│   └── CommonLibSSE/          # submodule
+├── .vscode/settings.json      # clangd 与格式化配置
+├── cmake/Plugin.h.in          # 插件元数据模板
+├── extern/CommonLibSSE/       # Git 子模块
 ├── src/
-│   ├── main.cpp               # SKSE entry points
-│   └── pch.h                  # precompiled header
-├── .clang-format
-├── .clang-tidy
+│   ├── main.cpp               # SKSE 入口点
+│   └── pch.h                  # 预编译头
 ├── CMakeLists.txt
 ├── CMakePresets.json
 ├── vcpkg.json
 └── vcpkg-configuration.json
 ```
 
-## Troubleshooting
+## 📝 自定义
 
-### "Could not find toolchain file"
+修改 `CMakeLists.txt` 顶部的项目信息：
 
-`VCPKG_ROOT` isn't set. See [Prerequisites](#set-vcpkg_root).
-
-### "error 126" in `skse64.log`
-
-The plugin can't load a dependency DLL. This template uses
-`x64-windows-static-md`, so the output should be self-contained. If you
-switched triplets, either revert or copy the required DLLs next to
-`Hello.dll`.
-
-### clangd reports errors in `Plugin.h.in`
-
-Add to `.vscode/settings.json`:
-
-```json
-"files.associations": {
-    "*.h.in": "plaintext"
-}
+```cmake
+project(Hello VERSION 0.1.0 LANGUAGES CXX)
+set(PROJECT_AUTHOR "Charlene Hoo")
 ```
 
-### clangd reports `@PROJECT_VERSION_MAJOR@` errors
+## 📄 License
 
-Same as above — the `.in` file is a CMake template, not C++. Mark it as
-`plaintext` so clangd ignores it.
+GPL-3.0-or-later。
 
-### Build is slow on first configure
-
-vcpkg compiles all dependencies from source. Subsequent configures reuse the
-binary cache at `%LOCALAPPDATA%\vcpkg\archives`.
-
-## License
-
-This project is licensed under the **GNU General Public License v3.0 or later**.
-
-It links against [CommonLibSSE](https://github.com/powerof3/CommonLibSSE),
-which is GPL-3.0. Under GPL's copyleft terms, the resulting plugin must also
-be distributed under a GPL-3.0-compatible license, with source code available
-to anyone who receives the binary.
-
-If you fork this template, keep the GPL-3.0 license or choose another
-GPL-3.0-compatible one (e.g. AGPL-3.0). **Do not relicense it as MIT** —
-that would violate the terms you inherited from CommonLibSSE.
+本项目链接了 GPL-3.0 的 [CommonLibSSE](https://github.com/powerof3/CommonLibSSE)。根据 GPL 传染性条款，衍生插件必须同样以 GPL-3.0 兼容协议开源。**请勿改为 MIT 协议**。
