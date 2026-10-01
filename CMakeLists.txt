@@ -30,7 +30,13 @@ target_include_directories(
 
 set(SKYRIM_SUPPORT_AE ON)
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/extern/CommonLibSSE" CommonLibSSE EXCLUDE_FROM_ALL SYSTEM)
-# find_package(commonlib-shared REQUIRED CONFIG)
+if(TARGET CommonLibSSE)
+    target_compile_options(CommonLibSSE PRIVATE
+        $<$<COMPILE_LANG_AND_ID:CXX,Clang,AppleClang>:-w>
+        $<$<COMPILE_LANG_AND_ID:CXX,GNU>:-w>
+        $<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/w>
+    )
+endif()
 target_link_libraries(
     "${PROJECT_NAME}"
     PRIVATE
