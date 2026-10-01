@@ -18,4 +18,5 @@ inline constexpr REL::Version kVersion {
 
 inline constexpr auto kName = "@PROJECT_NAME@"sv;
 inline constexpr auto kAuthor = "@PROJECT_AUTHOR@"sv;
+inline constexpr auto kAuthorEmail = "@PROJECT_AUTHOR_EMAIL@"sv;
 } // namespace Plugin

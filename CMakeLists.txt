@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 project(Hello VERSION 0.1.0 LANGUAGES CXX)
 set(PROJECT_AUTHOR "Charlene Hoo")
+set(PROJECT_AUTHOR_EMAIL "CharleneHoo@hotmail.com")
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

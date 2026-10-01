@@ -48,6 +48,7 @@ __declspec(dllexport) constinit auto SKSEPlugin_Version =
   data.PluginVersion(Plugin::kVersion);
   data.PluginName(Plugin::kName);
   data.AuthorName(Plugin::kAuthor);
+  data.AuthorEmail(Plugin::kAuthorEmail);
   data.UsesAddressLibrary();
   data.UsesUpdatedStructs();
   data.CompatibleVersions({SKSE::RUNTIME_SSE_LATEST});
