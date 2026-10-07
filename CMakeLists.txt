@@ -16,6 +16,7 @@ configure_file(
 add_library(
     "${PROJECT_NAME}" SHARED
     src/main.cpp
+    src/Event/EventProcessor.cpp
 )
 target_compile_features("${PROJECT_NAME}" PRIVATE cxx_std_23)
 if(MSVC)
@@ -28,6 +29,7 @@ endif()
 
 target_include_directories(
     "${PROJECT_NAME}" PRIVATE
+    "${CMAKE_CURRENT_SOURCE_DIR}/src"
     "${CMAKE_CURRENT_BINARY_DIR}/src"
 )
 
