@@ -49,14 +49,19 @@ SKSEPlugin_Load(const SKSE::LoadInterface *a_skse) -> bool {
   SKSE::Init(a_skse, SKSE::InitInfo{
                          .log = true,
                      });
+  REX::INFO("SKSEPlugin_Load: Init done");
+
   const auto *messaging = SKSE::GetMessagingInterface();
   if (messaging == nullptr) {
+    REX::CRITICAL("SKSEPlugin_Load: MessagingInterface is nullptr");
     return false;
   }
 
   if (!messaging->RegisterListener(OnMessage)) {
+    REX::CRITICAL("SKSEPlugin_Load: RegisterListener failed");
     return false;
   }
+  REX::INFO("SKSEPlugin_Load: RegisterListener done");
 
   return true;
 }
