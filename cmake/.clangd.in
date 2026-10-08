@@ -1,0 +1,11 @@
+CompileFlags:
+  CompilationDatabase: @CMAKE_BINARY_DIR@
+  Add:
+    - -I
+    - @CMAKE_SOURCE_DIR@/src
+    - -I
+    - @CMAKE_BINARY_DIR@/src
+    - -I
+    - @CMAKE_SOURCE_DIR@/extern/CommonLibSSE/include
+    - -imsvc
+    - @CMAKE_BINARY_DIR@/vcpkg_installed/x64-windows-static-md/include
