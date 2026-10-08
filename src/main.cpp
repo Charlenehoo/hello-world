@@ -47,21 +47,19 @@ extern "C" [[maybe_unused]] __declspec(dllexport) auto SKSEPlugin_Load(const SKS
                SKSE::InitInfo{
                    .log = true,
                });
-    REX::INFO("SKSEPlugin_Load: Init done");
 
     const auto* messaging = SKSE::GetMessagingInterface();
     if (messaging == nullptr) {
-        REX::CRITICAL("SKSEPlugin_Load: GetMessagingInterface failed; MessagingInterface is nullptr");
+        REX::CRITICAL("SKSEPlugin_Load: GetMessagingInterface returned nullptr");
         return false;
     }
-    REX::INFO("SKSEPlugin_Load: GetMessagingInterface done");
 
     if (!messaging->RegisterListener(OnMessage)) {
         REX::CRITICAL("SKSEPlugin_Load: RegisterListener failed");
         return false;
     }
-    REX::INFO("SKSEPlugin_Load: RegisterListener done");
 
+    REX::INFO("SKSEPlugin_Load: loaded");
     return true;
 }
 
