@@ -23,6 +23,7 @@ add_library(
     "${PROJECT_NAME}" SHARED
     src/main.cpp
     src/Event/EventProcessor.cpp
+    src/Event/InputProcessor.cpp
 )
 target_compile_features("${PROJECT_NAME}" PRIVATE cxx_std_23)
 if(MSVC)

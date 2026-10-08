@@ -1,20 +1,21 @@
 #include "pch.h"  // IWYU pragma: keep
 
 #include "Event/EventProcessor.h"
+#include "Event/InputProcessor.h"
 
 namespace {
 void RegisterEvents() {
-    auto& processor = EventProcessor::GetSingleton();
+    auto& gameEvents = EventProcessor::GetSingleton();
 
     if (auto* holder = RE::ScriptEventSourceHolder::GetSingleton()) {
-        holder->AddEventSink<RE::TESEquipEvent>(&processor);
-        holder->AddEventSink<RE::TESObjectLoadedEvent>(&processor);
+        holder->AddEventSink<RE::TESEquipEvent>(&gameEvents);
+        holder->AddEventSink<RE::TESObjectLoadedEvent>(&gameEvents);
     } else {
         REX::WARN("RegisterEvents: ScriptEventSourceHolder null");
     }
 
-    if (auto* inputManager = RE::BSInputDeviceManager::GetSingleton()) {
-        inputManager->AddEventSink<RE::InputEvent*>(&processor);
+    if (auto* inputMgr = RE::BSInputDeviceManager::GetSingleton()) {
+        inputMgr->AddEventSink<RE::InputEvent*>(&InputProcessor::GetSingleton());
     } else {
         REX::WARN("RegisterEvents: BSInputDeviceManager null");
     }
