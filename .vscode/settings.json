@@ -1,27 +1,30 @@
 {
-    "editor.formatOnSave": true,
-    "[c][cpp]": {
-        "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
-    },
-    "files.associations": {
-        ".clang-format": "yaml",
-        ".clang-format-ignore": "plaintext",
-        ".clang-tidy": "yaml",
-        ".clangd": "yaml",
-        "CMakeLists.txt": "cmake",
-        "*.cmake": "cmake",
-        "*.h.in": "plaintext"
-    },
-    "clangd.arguments": [
-        "--compile-commands-dir=${workspaceFolder}/build/clang-debug",
-        "--background-index",
-        "--clang-tidy",
-        "--completion-style=detailed",
-        "--header-insertion=iwyu",
-        "--pch-storage=memory",
-        "-j=8",
-        "--log=info"
-    ],
-    "clangd.onConfigChanged": "restart",
-    "C_Cpp.intelliSenseEngine": "disabled"
+  "editor.formatOnSave": true,
+  "[c]": {
+    "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+  },
+  "[cpp]": {
+    "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+  },
+  "files.associations": {
+    ".clang-format": "yaml",
+    ".clang-format-ignore": "plaintext",
+    ".clang-tidy": "yaml",
+    ".clangd": "yaml",
+    "CMakeLists.txt": "cmake",
+    "*.cmake": "cmake",
+    "*.h.in": "plaintext"
+  },
+  "clangd.arguments": [
+    "--compile-commands-dir=${workspaceFolder}/build/clang-debug",
+    "--background-index",
+    "--clang-tidy",
+    "--completion-style=detailed",
+    "--header-insertion=iwyu",
+    "--pch-storage=memory",
+    "-j=8",
+    "--log=info"
+  ],
+  "clangd.onConfigChanged": "restart",
+  "C_Cpp.intelliSenseEngine": "disabled"
 }
