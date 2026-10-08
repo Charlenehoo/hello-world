@@ -15,6 +15,10 @@
     "*.cmake": "cmake",
     "*.h.in": "plaintext"
   },
+  "json.schemaDownload.trustedDomains": {
+    "https://raw.githubusercontent.com": true,
+    "https://json.schemastore.org": true
+  },
   "clangd.arguments": [
     "--compile-commands-dir=${workspaceFolder}/build/clang-debug",
     "--background-index",
