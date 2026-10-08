@@ -6,7 +6,7 @@ namespace {
 void RegisterEvents() {
     auto* holder = RE::ScriptEventSourceHolder::GetSingleton();
     if (holder == nullptr) {
-        REX::WARN("RegisterEvents: ScriptEventSourceHolder is nullptr");
+        REX::WARN("RegisterEvents: ScriptEventSourceHolder::GetSingleton returned nullptr");
         return;
     }
 
@@ -25,7 +25,7 @@ void OnMessage(SKSE::MessagingInterface::Message* a_msg) {
 
     switch (a_msg->type) {
         case SKSE::MessagingInterface::kDataLoaded: {
-            REX::TRACE("OnMessage: DataLoaded");
+            REX::DEBUG("OnMessage: DataLoaded");
 
             RegisterEvents();
             break;
@@ -43,10 +43,7 @@ extern "C" [[maybe_unused]] __declspec(dllexport) auto SKSEPlugin_Load(const SKS
         return false;
     }
 
-    SKSE::Init(a_skse,
-               SKSE::InitInfo{
-                   .log = true,
-               });
+    SKSE::Init(a_skse);
 
     const auto* messaging = SKSE::GetMessagingInterface();
     if (messaging == nullptr) {
