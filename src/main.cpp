@@ -4,17 +4,22 @@
 
 namespace {
 void RegisterEvents() {
-    auto* holder = RE::ScriptEventSourceHolder::GetSingleton();
-    if (holder == nullptr) {
-        REX::WARN("RegisterEvents: ScriptEventSourceHolder::GetSingleton returned nullptr");
-        return;
+    auto& processor = EventProcessor::GetSingleton();
+
+    if (auto* holder = RE::ScriptEventSourceHolder::GetSingleton()) {
+        holder->AddEventSink<RE::TESEquipEvent>(&processor);
+        holder->AddEventSink<RE::TESObjectLoadedEvent>(&processor);
+    } else {
+        REX::WARN("RegisterEvents: ScriptEventSourceHolder null");
     }
 
-    auto& processor = EventProcessor::GetSingleton();
-    holder->AddEventSink<RE::TESEquipEvent>(&processor);
-    holder->AddEventSink<RE::TESObjectLoadedEvent>(&processor);
+    if (auto* inputManager = RE::BSInputDeviceManager::GetSingleton()) {
+        inputManager->AddEventSink<RE::InputEvent*>(&processor);
+    } else {
+        REX::WARN("RegisterEvents: BSInputDeviceManager null");
+    }
 
-    REX::INFO("RegisterEvents: Event sinks registered");
+    REX::INFO("RegisterEvents: done");
 }
 
 void OnMessage(SKSE::MessagingInterface::Message* a_msg) {
