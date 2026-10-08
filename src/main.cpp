@@ -6,7 +6,7 @@ namespace {
 void RegisterEvents() {
     auto* holder = RE::ScriptEventSourceHolder::GetSingleton();
     if (holder == nullptr) {
-        REX::WARN("[Event] ScriptEventSourceHolder is null, skipped.");
+        REX::WARN("RegisterEvents: ScriptEventSourceHolder is nullptr");
         return;
     }
 
@@ -14,22 +14,20 @@ void RegisterEvents() {
     holder->AddEventSink<RE::TESEquipEvent>(std::addressof(processor));
     holder->AddEventSink<RE::TESObjectLoadedEvent>(std::addressof(processor));
 
-    REX::INFO("[Event] EventProcessor registered.");
+    REX::INFO("RegisterEvents: Event sinks registered");
 }
 
 void OnMessage(SKSE::MessagingInterface::Message* a_msg) {
     if (a_msg == nullptr) {
+        REX::WARN("OnMessage: Message is nullptr");
         return;
     }
 
     switch (a_msg->type) {
         case SKSE::MessagingInterface::kDataLoaded: {
-            RegisterEvents();
+            REX::TRACE("OnMessage: DataLoaded");
 
-            auto* console = RE::ConsoleLog::GetSingleton();
-            if (console != nullptr) {
-                console->Print("Hello world");
-            }
+            RegisterEvents();
             break;
         }
         default:
@@ -53,9 +51,10 @@ extern "C" [[maybe_unused]] __declspec(dllexport) auto SKSEPlugin_Load(const SKS
 
     const auto* messaging = SKSE::GetMessagingInterface();
     if (messaging == nullptr) {
-        REX::CRITICAL("SKSEPlugin_Load: MessagingInterface is nullptr");
+        REX::CRITICAL("SKSEPlugin_Load: GetMessagingInterface failed; MessagingInterface is nullptr");
         return false;
     }
+    REX::INFO("SKSEPlugin_Load: GetMessagingInterface done");
 
     if (!messaging->RegisterListener(OnMessage)) {
         REX::CRITICAL("SKSEPlugin_Load: RegisterListener failed");
