@@ -1,7 +1,5 @@
 {
-    "name": "hello",
-    "version": "0.1.0",
-    "dependencies": [
-        "commonlib-shared"
-    ]
+  "name": "hello",
+  "version": "0.1.0",
+  "dependencies": ["commonlib-shared", "nlohmann-json", "magic-enum"]
 }
