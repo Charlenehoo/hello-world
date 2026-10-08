@@ -3,3 +3,4 @@ __pycache__
 scan.md
 
 /.clangd
+/*.log

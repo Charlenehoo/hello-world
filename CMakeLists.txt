@@ -87,3 +87,29 @@ if(DEFINED ENV{MO2})
 else()
     message(STATUS "MO2 environment variable not found. Skipping auto-copy.")
 endif()
+
+# ─────── Link ${PROJECT_NAME}.log into project root (Windows only) ───────
+if(WIN32)
+    execute_process(
+        COMMAND powershell -NoProfile -Command "[Environment]::GetFolderPath('MyDocuments')"
+        OUTPUT_VARIABLE _docs OUTPUT_STRIP_TRAILING_WHITESPACE ERROR_QUIET
+    )
+
+    set(_log "${_docs}/My Games/Skyrim Special Edition/SKSE/${PROJECT_NAME}.log")
+    set(_link "${CMAKE_SOURCE_DIR}/${PROJECT_NAME}.log")
+
+    if(NOT EXISTS "${_log}")
+        message(STATUS "SKSE log not found at: ${_log}. Run the game once to generate it.")
+    elseif(EXISTS "${_link}")
+        message(STATUS "Log link already exists. Skipping: ${_link}")
+    else()
+        # Hard link by default; falls back to a copy if the source and
+        # destination live on different volumes. No admin rights needed.
+        file(CREATE_LINK "${_log}" "${_link}" COPY_ON_ERROR RESULT _err)
+        if(_err)
+            message(WARNING "Failed to link SKSE log: ${_err}")
+        else()
+            message(STATUS "Linked SKSE log: ${_link} -> ${_log}")
+        endif()
+    endif()
+endif()
