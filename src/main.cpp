@@ -11,8 +11,8 @@ void RegisterEvents() {
     }
 
     auto& processor = EventProcessor::GetSingleton();
-    holder->AddEventSink<RE::TESEquipEvent>(std::addressof(processor));
-    holder->AddEventSink<RE::TESObjectLoadedEvent>(std::addressof(processor));
+    holder->AddEventSink<RE::TESEquipEvent>(&processor);
+    holder->AddEventSink<RE::TESObjectLoadedEvent>(&processor);
 
     REX::INFO("RegisterEvents: Event sinks registered");
 }
