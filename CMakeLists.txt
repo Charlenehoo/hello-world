@@ -50,7 +50,7 @@ target_link_libraries(
     "${PROJECT_NAME}" PRIVATE
     CommonLibSSE::CommonLibSSE
     nlohmann_json::nlohmann_json
-    magic_enum::magic_enum 
+    magic_enum::magic_enum
 )
 
 target_precompile_headers("${PROJECT_NAME}" PRIVATE src/pch.h)
