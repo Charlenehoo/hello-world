@@ -6,8 +6,6 @@
 #include <string_view>
 
 namespace Plugin {
-using namespace std::literals;
-
 inline constexpr REL::Version kVersion {
     // clang-format off
     @PROJECT_VERSION_MAJOR@u,
@@ -16,7 +14,7 @@ inline constexpr REL::Version kVersion {
     // clang-format on
 };
 
-inline constexpr auto kName = "@PROJECT_NAME@"sv;
-inline constexpr auto kAuthor = "@PROJECT_AUTHOR@"sv;
-inline constexpr auto kAuthorEmail = "@PROJECT_AUTHOR_EMAIL@"sv;
+inline constexpr std::string_view kName {"@PROJECT_NAME@"};
+inline constexpr std::string_view kAuthor {"@PROJECT_AUTHOR@"};
+inline constexpr std::string_view kAuthorEmail {"@PROJECT_AUTHOR_EMAIL@"};
 } // namespace Plugin
