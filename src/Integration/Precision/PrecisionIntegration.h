@@ -2,6 +2,7 @@
 
 #pragma once
 
+// NOLINTNEXTLINE(readability-identifier-naming) — 上游命名空间，非本工程命名风格
 namespace PRECISION_API {
 class IVPrecision4;
 }

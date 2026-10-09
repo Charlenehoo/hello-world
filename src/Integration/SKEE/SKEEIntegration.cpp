@@ -24,7 +24,7 @@ auto SKEEIntegration::GetSingleton() -> SKEEIntegration& {
 }
 
 void SKEEIntegration::Initialize() {
-    auto* messaging = SKSE::GetMessagingInterface();
+    const auto* messaging = SKSE::GetMessagingInterface();
     if (messaging == nullptr) {
         REX::WARN("SKEEIntegration: GetMessagingInterface returned nullptr");
         return;
@@ -41,8 +41,11 @@ void SKEEIntegration::Initialize() {
         return;
     }
 
+    // NOLINTBEGIN(cppcoreguidelines-pro-type-static-cast-downcast)
     auto* bodyMorph =
         static_cast<SKEE::IBodyMorphInterface*>(exchange.interfaceMap->QueryInterface(kBodyMorphInterfaceName));
+    // NOLINTEND(cppcoreguidelines-pro-type-static-cast-downcast) — SKEE 接口查询协议，name→type 契约确定，跨 DLL 无
+    // RTTI
     if (bodyMorph == nullptr) {
         REX::WARN("SKEEIntegration: BodyMorph interface not found");
         return;
