@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.31)
 project(Hello VERSION 0.1.0 LANGUAGES CXX)
 set(PROJECT_AUTHOR "Charlene Hoo")
 set(PROJECT_AUTHOR_EMAIL "CharleneHoo@hotmail.com")

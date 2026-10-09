@@ -16,8 +16,7 @@
     "*.h.in": "plaintext"
   },
   "json.schemaDownload.trustedDomains": {
-    "https://raw.githubusercontent.com": true,
-    "https://json.schemastore.org": true
+    "https://raw.githubusercontent.com": true
   },
   "clangd.arguments": [
     "--compile-commands-dir=${workspaceFolder}/build/clang-debug",
