@@ -21,6 +21,7 @@ add_library(
     src/Event/EventProcessor.cpp
     src/Event/InputProcessor.cpp
     src/Integration/Precision/PrecisionIntegration.cpp
+    src/Integration/SKEE/SKEEIntegration.cpp
 )
 target_compile_features("${PROJECT_NAME}" PRIVATE cxx_std_23)
 if(MSVC)
