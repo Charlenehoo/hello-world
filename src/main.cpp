@@ -2,6 +2,7 @@
 
 #include "Event/EventProcessor.h"
 #include "Event/InputProcessor.h"
+#include "Integration/Precision/PrecisionIntegration.h"
 
 namespace {
 void RegisterEvents() {
@@ -30,9 +31,17 @@ void OnMessage(SKSE::MessagingInterface::Message* a_msg) {
     }
 
     switch (a_msg->type) {
+        case SKSE::MessagingInterface::kPostPostLoad: {
+            REX::DEBUG("OnMessage: PostPostLoad");
+
+            // 请求外部插件 API，此时所有 SKSE 插件的 Load 已完成
+            PrecisionIntegration::GetSingleton().Initialize();
+            break;
+        }
         case SKSE::MessagingInterface::kDataLoaded: {
             REX::DEBUG("OnMessage: DataLoaded");
 
+            // 挂游戏事件，此时游戏数据与事件源已就绪
             RegisterEvents();
             break;
         }

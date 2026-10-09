@@ -392,7 +392,10 @@ typedef void* (*_RequestPluginAPI)(const InterfaceVersion interfaceVersion);
 /// <param name="a_interfaceVersion">The interface version to request</param>
 /// <returns>The pointer to the API singleton, or nullptr if request failed</returns>
 [[nodiscard]] inline void* RequestPluginAPI(const InterfaceVersion a_interfaceVersion = InterfaceVersion::V4) {
-    auto pluginHandle = REX::W32::GetModuleHandle("Precision.dll");
+    // vendor patch: 上游使用 REX::W32::GetModuleHandle，
+    // 当前 powerof3/CommonLibSSE 仅提供 GetModuleHandleA / GetModuleHandleW。
+    // 待上游更新或 Precision 官方跟进后移除本 patch。
+    auto pluginHandle = REX::W32::GetModuleHandleA("Precision.dll");
     _RequestPluginAPI requestAPIFunction =
         (_RequestPluginAPI)REX::W32::GetProcAddress(pluginHandle, "RequestPluginAPI");
     if (requestAPIFunction) {
