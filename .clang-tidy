@@ -14,6 +14,16 @@ HeaderFilterRegex: ".*"
 FormatStyle: file
 
 CheckOptions:
+  # ------------------------------------------------------------------
+  # 补充约定：缩写词在标识符中使用全大写。
+  #   actorFormID ✅   actorFormId ❌
+  #   kNPCFaction ✅   kNpcFaction ❌
+  #   常见：ID、NPC、URL、UI、API、CPU、GPU、SSE
+  #
+  # readability-identifier-naming 只检查整体大小写风格，无法表达这条，
+  # 靠 code review 保证。
+  # ------------------------------------------------------------------
+
   # --- 类型 ---
   - key: readability-identifier-naming.ClassCase
     value: CamelCase
