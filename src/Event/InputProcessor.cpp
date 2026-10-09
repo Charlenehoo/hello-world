@@ -37,7 +37,12 @@ auto InputProcessor::ProcessEvent(RE::InputEvent* const* a_event, RE::BSTEventSo
         const auto dev = static_cast<std::size_t>(device);
         const auto idx = static_cast<std::size_t>(code);
         if (dev >= kMaxDevices || idx >= kMaxCode) {
-            continue;  // 越界，忽略（理论上不会发生）
+            REX::WARN("InputProcessor: out-of-range device={} code={} (kMaxDevices={}, kMaxCode={}); enlarge the array",
+                      static_cast<int>(device),
+                      code,
+                      kMaxDevices,
+                      kMaxCode);
+            continue;
         }
 
         const bool isDown = button->value > kPressedThreshold;
