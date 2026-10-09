@@ -1,0 +1,7 @@
+CompileFlags:
+  CompilationDatabase: build/clang-debug
+---
+If:
+  PathMatch: .*[\\/](vendor|extern)[\\/].*
+Diagnostics:
+  Suppress: "*"

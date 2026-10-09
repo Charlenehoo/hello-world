@@ -11,6 +11,7 @@ Checks: >
 
 WarningsAsErrors: ""
 HeaderFilterRegex: ".*"
+ExcludeHeaderFilterRegex: '.*[\\/](vendor|extern)[\\/].*'
 FormatStyle: file
 
 CheckOptions:
