@@ -44,8 +44,8 @@ void SKEEIntegration::Initialize() {
     // NOLINTBEGIN(cppcoreguidelines-pro-type-static-cast-downcast)
     auto* bodyMorph =
         static_cast<SKEE::IBodyMorphInterface*>(exchange.interfaceMap->QueryInterface(kBodyMorphInterfaceName));
-    // NOLINTEND(cppcoreguidelines-pro-type-static-cast-downcast) — SKEE 接口查询协议，name→type 契约确定，跨 DLL 无
-    // RTTI
+    // NOLINTEND(cppcoreguidelines-pro-type-static-cast-downcast)
+    // SKEE 接口查询协议，name→type 契约确定，跨 DLL 无 RTTI
     if (bodyMorph == nullptr) {
         REX::WARN("SKEEIntegration: BodyMorph interface not found");
         return;

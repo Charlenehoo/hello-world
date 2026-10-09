@@ -3,6 +3,7 @@
 #include "Event/EventProcessor.h"
 #include "Event/InputProcessor.h"
 #include "Integration/Precision/PrecisionIntegration.h"
+#include "Integration/SKEE/SKEEIntegration.h"
 
 namespace {
 void RegisterEvents() {
@@ -36,6 +37,7 @@ void OnMessage(SKSE::MessagingInterface::Message* a_msg) {
 
             // 请求外部插件 API，此时所有 SKSE 插件的 Load 已完成
             PrecisionIntegration::GetSingleton().Initialize();
+            SKEEIntegration::GetSingleton().Initialize();
             break;
         }
         case SKSE::MessagingInterface::kDataLoaded: {
