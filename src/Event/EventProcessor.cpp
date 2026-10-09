@@ -19,14 +19,14 @@ auto EventProcessor::ProcessEvent(const RE::TESEquipEvent* a_event, RE::BSTEvent
         return RE::BSEventNotifyControl::kContinue;
     }
 
-    const auto actorFormId = a_event->actor != nullptr ? a_event->actor->GetFormID() : 0;
+    const auto actorFormID = a_event->actor != nullptr ? a_event->actor->GetFormID() : 0;
     const char* actorName = a_event->actor != nullptr ? a_event->actor->GetName() : nullptr;
 
     const auto* baseForm = a_event->baseObject != 0 ? RE::TESForm::LookupByID(a_event->baseObject) : nullptr;
     const char* baseName = baseForm != nullptr ? baseForm->GetName() : nullptr;
 
     REX::DEBUG("TESEquipEvent: actor={:08X} '{}' base={:08X} '{}' originalRefr={:08X} uniqueID={} equipped={}",
-               actorFormId,
+               actorFormID,
                actorName != nullptr ? actorName : "?",
                a_event->baseObject,
                baseName != nullptr ? baseName : "?",
