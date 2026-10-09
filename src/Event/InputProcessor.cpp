@@ -34,20 +34,26 @@ auto InputProcessor::ProcessEvent(RE::InputEvent* const* a_event, RE::BSTEventSo
         const auto device = button->GetDevice();
         const auto code = button->GetIDCode();
 
+        const auto dev = static_cast<std::size_t>(device);
+        const auto idx = static_cast<std::size_t>(code);
+        if (dev >= kMaxDevices || idx >= kMaxCode) {
+            continue;  // 越界，忽略（理论上不会发生）
+        }
+
         const bool isDown = button->value > kPressedThreshold;
 
-        const KeyId keyId{.m_device = device, .m_code = code};
-        const auto iter = m_keyState.find(keyId);
-        const bool wasDown = (iter != m_keyState.end()) ? iter->second : false;
+        // .at() 而非 []：满足 tidy 的边界安全要求。
+        // 上面已经做过边界检查，这里的 .at() 不可能抛。
+        auto& slot = m_keyState.at(dev).at(idx);
 
-        // 电平没变 → 按住/空闲期间的重复事件，跳过
-        if (isDown == wasDown) {
+        // CAS：只有"当前状态 != isDown"时才成功，等价于"发生了跳变"。
+        // 成功后槽位被写入 isDown；失败说明状态没变（重复事件），跳过。
+        bool expected = !isDown;
+        if (!slot.compare_exchange_strong(expected, isDown, std::memory_order_relaxed)) {
             continue;
         }
 
-        m_keyState[keyId] = isDown;
-
-        // 只有跳变时才解析名字、打日志
+        // 只有状态真的变了才解析名字、打日志
         RE::BSFixedString name;
         if (inputMgr == nullptr || !inputMgr->GetButtonNameFromID(device, static_cast<std::int32_t>(code), name)) {
             name = "?";

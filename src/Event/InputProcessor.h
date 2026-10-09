@@ -4,9 +4,9 @@
 
 #include <RE/B/BSTEvent.h>
 #include <RE/I/InputEvent.h>
-#include <cstdint>
-#include <unordered_map>
-
+#include <array>
+#include <atomic>
+#include <cstddef>
 
 class InputProcessor : public RE::BSTEventSink<RE::InputEvent*> {
 public:
@@ -24,26 +24,11 @@ public:
 private:
     InputProcessor() = default;
 
-    // device 和 code 都是小整数，直接打包成 32 位即可唯一标识一个物理按键。
-    // 高 8 位放 device，低 24 位放 code。
-    struct KeyId {
-        RE::INPUT_DEVICE m_device;
-        std::uint32_t m_code;
+    // 输入事件跨线程分发，用固定大小的原子数组替代 unordered_map：
+    // 数组无 rehash、无节点分配、无迭代器失效，每个槽位独立读改写。
+    // 索引：[device][code]，越界的直接忽略。
+    static constexpr std::size_t kMaxDevices = 4;  // kKeyboard / kMouse / kGamepad / kVirtualKeyboard
+    static constexpr std::size_t kMaxCode = 512;   // 键盘最大 ~0x40，鼠标 <0x10，手柄 <0x200
 
-        auto operator==(const KeyId& a_other) const noexcept -> bool {
-            return m_device == a_other.m_device && m_code == a_other.m_code;
-        }
-
-        [[nodiscard]] auto Hash() const noexcept -> std::size_t {
-            constexpr int kDeviceShift = 24;
-            return (static_cast<std::uint32_t>(m_device) << kDeviceShift) | m_code;
-        }
-    };
-
-    struct KeyIdHash {
-        auto operator()(const KeyId& a_key) const noexcept -> std::size_t { return a_key.Hash(); }
-    };
-
-    // 每个键“上一次是否按下”。只在 false<->true 跳变时输出日志。
-    std::unordered_map<KeyId, bool, KeyIdHash> m_keyState;
+    std::array<std::array<std::atomic<bool>, kMaxCode>, kMaxDevices> m_keyState{};
 };
