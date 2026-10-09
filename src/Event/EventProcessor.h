@@ -1,7 +1,6 @@
 #pragma once
 
 #include <RE/B/BSTEvent.h>
-#include <RE/I/InputEvent.h>
 #include <RE/T/TESEquipEvent.h>
 #include <RE/T/TESObjectLoadedEvent.h>
 
