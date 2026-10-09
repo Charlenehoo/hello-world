@@ -15,11 +15,11 @@ configure_file(
     @ONLY
 )
 
-configure_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/.clangd.in"
-    "${CMAKE_CURRENT_SOURCE_DIR}/.clangd"
-    @ONLY
-)
+# configure_file(
+#     "${CMAKE_CURRENT_SOURCE_DIR}/cmake/.clangd.in"
+#     "${CMAKE_CURRENT_SOURCE_DIR}/.clangd"
+#     @ONLY
+# )
 
 add_library(
     "${PROJECT_NAME}" SHARED
@@ -52,11 +52,14 @@ if(TARGET CommonLibSSE)
     )
 endif()
 
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/vendor/PrecisionAPI" PrecisionAPI)
+
 find_package(nlohmann_json CONFIG REQUIRED)
 find_package(magic_enum CONFIG REQUIRED)
 
 target_link_libraries(
     "${PROJECT_NAME}" PRIVATE
+    PrecisionAPI::PrecisionAPI
     CommonLibSSE::CommonLibSSE
     nlohmann_json::nlohmann_json
     magic_enum::magic_enum
