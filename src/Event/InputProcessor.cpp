@@ -4,6 +4,9 @@
 
 #include "Event/InputProcessor.h"
 
+#include "Debug/DecapitateTest.h"
+
+
 auto InputProcessor::GetSingleton() -> InputProcessor& {
     static InputProcessor s_singleton;
     return s_singleton;
@@ -56,6 +59,11 @@ auto InputProcessor::ProcessEvent(RE::InputEvent* const* a_event, RE::BSTEventSo
         bool expected = !isDown;
         if (!slot.compare_exchange_strong(expected, isDown, std::memory_order_relaxed)) {
             continue;
+        }
+
+        constexpr std::uint32_t kKeyK = 0x25;
+        if (isDown && device == RE::INPUT_DEVICE::kKeyboard && code == kKeyK) {
+            Debug::DecapitateCrosshairTarget();
         }
 
         // 只有状态真的变了才解析名字、打日志

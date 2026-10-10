@@ -23,6 +23,7 @@ add_library(
     src/Integration/SKEE/SKEEIntegration.cpp
     src/Integration/Precision/PrecisionIntegration.cpp
     src/Integration/NGD/NGDecapitationsIntegration.cpp
+    src/Debug/DecapitateTest.cpp
 )
 target_compile_features("${PROJECT_NAME}" PRIVATE cxx_std_23)
 if(MSVC)
