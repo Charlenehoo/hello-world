@@ -41,6 +41,10 @@ void OnMessage(SKSE::MessagingInterface::Message* a_msg) {
             SKEEIntegration::GetSingleton().Initialize();
             break;
         }
+        case SKSE::MessagingInterface::kInputLoaded: {
+            REX::DEBUG("OnMessage: InputLoaded");
+            break;
+        }
         case SKSE::MessagingInterface::kDataLoaded: {
             REX::DEBUG("OnMessage: DataLoaded");
 
@@ -48,13 +52,17 @@ void OnMessage(SKSE::MessagingInterface::Message* a_msg) {
             RegisterEvents();
             break;
         }
-        case SKSE::MessagingInterface::kPostLoadGame:
-        case SKSE::MessagingInterface::kNewGame: {
-            REX::DEBUG("OnMessage: Game loaded");
+        case SKSE::MessagingInterface::kPostLoadGame: {
+            REX::DEBUG("OnMessage: PostLoadGame");
 
-            // NGD 的 g_API 在它自己的 kDataLoaded 里才 new 出来，
-            // 而 listener 顺序无法保证，所以要等到游戏世界完全加载后
-            // 再绑定。kPostLoadGame / kNewGame 是互斥的两条入口，都挂。
+            // 读档进入游戏世界。
+            NGDecapitationsIntegration::GetSingleton().Initialize();
+            break;
+        }
+        case SKSE::MessagingInterface::kNewGame: {
+            REX::DEBUG("OnMessage: NewGame");
+
+            // 新游戏进入游戏世界。
             NGDecapitationsIntegration::GetSingleton().Initialize();
             break;
         }
