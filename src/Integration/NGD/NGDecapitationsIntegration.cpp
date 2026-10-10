@@ -4,39 +4,47 @@
 
 #include "Integration/NGD/NGDecapitationsIntegration.h"
 
-auto NGDecapitationsIntegration::GetSingleton() -> NGDecapitationsIntegration& {
-    static NGDecapitationsIntegration s_singleton;
-    return s_singleton;
+namespace {
+// 唯一真状态：NGD API 是否已探测且可用。
+// static 局部变量保证 lambda 在整个进程生命周期内只执行一次（C++11 起线程安全）。
+// 失败也缓存，不会因为后续调用而重试 Dispatch。
+auto EnsureLoaded() -> bool {
+    static bool s_apiAvailable = [] {
+        if (!NGDecapitationsAPI::LoadAPI()) {
+            REX::INFO("NGDecapitationsIntegration: NGD not installed or version mismatch; disabled");
+            return false;
+        }
+        REX::INFO("NGDecapitationsIntegration: initialized (apiVersion={:08X})",
+                  NGDecapitationsAPI::g_API->GetVersion());
+        return true;
+    }();
+    return s_apiAvailable;
 }
+}  // namespace
 
-void NGDecapitationsIntegration::Initialize() {
-    if (m_initialized) {
-        return;
-    }
-    m_initialized = true;
-
-    if (!NGDecapitationsAPI::LoadAPI()) {
-        REX::INFO("NGDecapitationsIntegration: NGD not installed or version mismatch; disabled");
-        return;
-    }
-
-    REX::INFO("NGDecapitationsIntegration: initialized (apiVersion={:08X})", NGDecapitationsAPI::g_API->GetVersion());
-}
-
-auto NGDecapitationsIntegration::IsAvailable() -> bool { return NGDecapitationsAPI::g_API != nullptr; }
+auto NGDecapitationsIntegration::IsAvailable() -> bool { return EnsureLoaded(); }
 
 auto NGDecapitationsIntegration::GetAPI() -> NGDecapitationsAPI::NGDecapitationsAPI* {
-    return NGDecapitationsAPI::g_API;
+    return EnsureLoaded() ? NGDecapitationsAPI::g_API : nullptr;
 }
 
 auto NGDecapitationsIntegration::Decapitate(RE::Actor* a_target, DecapitateParams* a_params) -> bool {
-    return NGDecapitationsAPI::g_API != nullptr && NGDecapitationsAPI::g_API->Decapitate(a_target, a_params);
+    if (!EnsureLoaded()) {
+        return false;
+    }
+    return NGDecapitationsAPI::g_API->Decapitate(a_target, a_params);
 }
 
 auto NGDecapitationsIntegration::IsDecapitated(RE::Actor* a_actor) -> bool {
-    return NGDecapitationsAPI::g_API != nullptr && NGDecapitationsAPI::g_API->IsDecapitated(a_actor);
+    if (!EnsureLoaded()) {
+        return false;
+    }
+    return NGDecapitationsAPI::g_API->IsDecapitated(a_actor);
 }
 
 auto NGDecapitationsIntegration::IsHead(RE::Actor* a_actor) -> bool {
-    return NGDecapitationsAPI::g_API != nullptr && NGDecapitationsAPI::g_API->IsHead(a_actor);
+    if (!EnsureLoaded()) {
+        return false;
+    }
+    return NGDecapitationsAPI::g_API->IsHead(a_actor);
 }

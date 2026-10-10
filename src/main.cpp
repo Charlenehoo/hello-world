@@ -2,7 +2,6 @@
 
 #include "Event/EventProcessor.h"
 #include "Event/InputProcessor.h"
-#include "Integration/NGD/NGDecapitationsIntegration.h"
 #include "Integration/Precision/PrecisionIntegration.h"
 #include "Integration/SKEE/SKEEIntegration.h"
 
@@ -41,29 +40,11 @@ void OnMessage(SKSE::MessagingInterface::Message* a_msg) {
             SKEEIntegration::GetSingleton().Initialize();
             break;
         }
-        case SKSE::MessagingInterface::kInputLoaded: {
-            REX::DEBUG("OnMessage: InputLoaded");
-            break;
-        }
         case SKSE::MessagingInterface::kDataLoaded: {
             REX::DEBUG("OnMessage: DataLoaded");
 
             // 挂游戏事件，此时游戏数据与事件源已就绪
             RegisterEvents();
-            break;
-        }
-        case SKSE::MessagingInterface::kPostLoadGame: {
-            REX::DEBUG("OnMessage: PostLoadGame");
-
-            // 读档进入游戏世界。
-            NGDecapitationsIntegration::GetSingleton().Initialize();
-            break;
-        }
-        case SKSE::MessagingInterface::kNewGame: {
-            REX::DEBUG("OnMessage: NewGame");
-
-            // 新游戏进入游戏世界。
-            NGDecapitationsIntegration::GetSingleton().Initialize();
             break;
         }
         default:
