@@ -2,6 +2,7 @@
 
 #include "Event/EventProcessor.h"
 #include "Event/InputProcessor.h"
+#include "Integration/NGD/NGDecapitationsIntegration.h"
 #include "Integration/Precision/PrecisionIntegration.h"
 #include "Integration/SKEE/SKEEIntegration.h"
 
@@ -45,6 +46,16 @@ void OnMessage(SKSE::MessagingInterface::Message* a_msg) {
 
             // 挂游戏事件，此时游戏数据与事件源已就绪
             RegisterEvents();
+            break;
+        }
+        case SKSE::MessagingInterface::kPostLoadGame:
+        case SKSE::MessagingInterface::kNewGame: {
+            REX::DEBUG("OnMessage: Game loaded");
+
+            // NGD 的 g_API 在它自己的 kDataLoaded 里才 new 出来，
+            // 而 listener 顺序无法保证，所以要等到游戏世界完全加载后
+            // 再绑定。kPostLoadGame / kNewGame 是互斥的两条入口，都挂。
+            NGDecapitationsIntegration::GetSingleton().Initialize();
             break;
         }
         default:
