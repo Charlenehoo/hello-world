@@ -24,6 +24,7 @@ add_library(
     src/Integration/Precision/PrecisionIntegration.cpp
     src/Integration/NGD/NGDecapitationsIntegration.cpp
     src/Debug/DecapitateTest.cpp
+    src/Debug/CloneCorpse.cpp
 )
 target_compile_features("${PROJECT_NAME}" PRIVATE cxx_std_23)
 if(MSVC)

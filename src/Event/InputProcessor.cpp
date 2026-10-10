@@ -4,6 +4,7 @@
 
 #include "Event/InputProcessor.h"
 
+#include "Debug/CloneCorpse.h"
 #include "Debug/DecapitateTest.h"
 
 
@@ -64,6 +65,21 @@ auto InputProcessor::ProcessEvent(RE::InputEvent* const* a_event, RE::BSTEventSo
         constexpr std::uint32_t kKeyK = 0x25;
         if (isDown && device == RE::INPUT_DEVICE::kKeyboard && code == kKeyK) {
             Debug::DecapitateCrosshairTarget();
+        }
+
+        constexpr std::uint32_t kKeyJ = 0x24;  // DirectInput scancode for 'J'
+        if (isDown && device == RE::INPUT_DEVICE::kKeyboard && code == kKeyJ) {
+            auto* pickData = RE::CrosshairPickData::GetSingleton();
+            auto* target = pickData ? pickData->target.get().get() : nullptr;
+            auto* actor = target ? target->As<RE::Actor>() : nullptr;
+
+            Debug::CloneAndOverlapStableCorpse(actor, [](RE::Actor* a_clone) {
+                if (a_clone != nullptr) {
+                    REX::INFO("clone ready: {:08X}", a_clone->GetFormID());
+                } else {
+                    REX::WARN("clone failed");
+                }
+            });
         }
 
         // 只有状态真的变了才解析名字、打日志
